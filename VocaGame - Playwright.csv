@@ -1,0 +1,188 @@
+Function/Test Scenario Name,TC_ID,Test Condition,Test Case,Description,Pre-Condition,Action Steps,Test Data,Expected Result,Actual Result,Screenshot 1 (Staging),Screenshot 2 (Prod),Remarks,Headers,Payload,Response/Console,Status (Staging),Status (Prod),PIC,Action,Screenshot (RETEST),Remarks,Payload,Response,"Status
+(RETEST)",DATE,Notes
+Order - Product,,,,,,,,,,,,,,,,,,,,,,,,,,
+Order Product - Page Display,OP-001,Positive,Product page loads completely,"Verify header, game banner, account fields, email field, and denomination list are displayed. The payment popup stays closed until a denomination is selected.",Internet connection available.,1. Open the product top-up page URL.,,"Page loads without error. Account fields (User ID and Zone ID), the email field, and denomination cards are displayed. The payment method popup is not open.",,,,,,,,,,,,,,,,,,
+Order Product - Page Display,OP-002,Positive,Denomination cards show complete info,"Verify every card shows name, bonus detail, icon, and price in Rupiah.",Page loaded.,"1. Scroll through the denomination section.
+ 2. Check each card.",,"Each card shows amount, bonus text (if any), icon, and price formatted as Rp with thousand separators; no card has a blank price or missing image.",,,,,,,,,,,,,,,,,,
+Order Product - Page Display,OP-003,Positive,Category tabs scroll to the matching section,Verify tab navigation works.,Page loaded.,1. Click each category tab one by one.,,Page scrolls to or highlights the matching section for each tab; the active tab is visually indicated; no tab is empty or broken.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-004,Positive,Input valid User ID and Zone ID,Verify valid data is accepted.,Page loaded.,"1. Enter User ID.
+ 2. Enter Zone ID.",User ID and Zone ID of a valid test account (ML_USER_ID / ML_ZONE_ID in .env),Both fields accept input; no validation error is shown; fields keep the entered values.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-005,Positive,Account nickname verification,Verify nickname matches the real account so users can confirm the target. Assumption: system shows the in-game nickname.,A real game account is available.,"1. Enter a real User ID and Zone ID. 
+2. Wait for the nickname before filling email.",Real User ID and Zone ID,"The correct in-game nickname is shown after the account is filled, before email and denomination.",,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-006,Positive,Select a Diamond denomination,Verify that choosing a denomination opens the payment method popup.,Account and email are already filled.,"1. Fill User ID and Zone ID. 
+2. Fill email. 
+3. Click a diamond denomination.",5 Diamonds,The card is selected and a popup opens to choose a payment method. The popup shows the item name and price.,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-007,Positive,Change selection to another denomination,Verify changing the denomination updates the item shown in the payment popup.,One denomination selected.,"1. Select denomination A.
+2. Select denomination B.",A: 5 Diamonds; B: 10 Diamonds,Only B stays selected. The payment popup shows B's name and price.,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-008,Positive,Deselect denomination by clicking it again,Verify deselecting the denomination does not leave a stale item in the payment popup.,One denomination selected.,"1. Fill account and email. 
+2. Select a denomination so the payment popup opens. 
+3. Close the popup. 
+4. Click the same denomination again.",,"The denomination is deselected and the payment popup does not keep a stale price. If toggle-off is not supported, the denomination stays selected and the popup can be opened again with the same item.",,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-009,Positive,Select Weekly Diamond Pass,Verify selecting the weekly pass opens the payment popup with the correct name and price.,Page loaded.,"1. Fill account and email. 
+2. Select Weekly Diamond Pass so the payment popup opens.",,The pass is selected and the payment popup opens with the correct name and price.,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-010,Positive,Select Twilight Pass,Verify selecting Twilight Pass opens the payment popup with the correct name and price.,Page loaded.,"1. Fill account and email. 
+2. Select Twilight Pass so the payment popup opens.",,The pass is selected and the payment popup opens with the correct name and price.,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-011,Positive,Select Limited Time Bundle,Verify each bundle can be selected and the payment popup shows that bundle and its price.,Page loaded.,"1. Fill account and email. 
+2. Select Weekly Elite Bundle and check the payment popup. 
+3. Select Monthly Epic Bundle and check the popup again.",,Each bundle can be selected. After each selection the payment popup shows that bundle and its price.,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-012,Positive,Select 2x Recharge Bonus items,Verify each recharge item can be selected and the payment popup shows that item and its price.,Page loaded.,"1. Fill account and email. 
+2. Select each 2x Recharge item and check the payment popup after each selection.",50; 150; 250; 500 Diamond Recharge,Each item can be selected. After each selection the payment popup shows that item and its price.,,,,,,,,,,,,,,,,,,
+Order Product - Contact Info,OP-013,Positive,Input a valid email,Verify a valid email is accepted after the account is filled and before a denomination is selected.,Account fields are filled.,"1. Fill User ID and Zone ID. 
+2. Enter a valid email. 
+3. Do not select a denomination yet.",test@example.com,The email is accepted with no validation error. The payment popup stays closed until a denomination is selected.,,,,,,,,,,,,,,,,,,
+Order Product - Payment Method,OP-014,Positive,Payment popup opens after a denomination is selected,"Verify available payment methods are listed in a popup, with fee and total.",Account and email are filled.,"1. Fill account and email. 
+2. Select a denomination.",,"A popup opens to choose a payment method. Methods are listed with name and icon (for example QRIS, e-wallet, virtual account, minimarket). Each method shows its fee and final total.",,,,,,,,,,,,,,,,,,
+Order Product - Payment Method,OP-015,Positive,Selecting a payment method in the popup updates the total,Verify the total in the popup recalculates with the admin fee.,The payment popup is open after a denomination is selected.,"1. In the payment popup, select payment method A and note the total. 
+2. Select payment method B.",,The total in the popup updates immediately for each method. Total = item price + fee - discount.,,,,,,,,,,,,,,,,,,
+Order Product - Place Order,OP-016,Positive,Complete order with all valid data,Verify the happy path creates an order and redirects to payment.,"Account, email, and a denomination are filled. A payment method is selected in the popup.","1. Fill account (User ID and Zone ID). 
+2. Fill email. 
+3. Select a denomination. 
+4. In the payment popup, select a payment method. 
+5. Confirm the order.",User ID: valid; Zone ID: valid; email: test@example.com; 86 Diamonds,Order is created with a unique invoice/order number; user is redirected to payment instructions/page with correct total.,,,,,,,,,,,,,,,,,,
+Order Product - Place Order,OP-017,Positive,Review the order inside the payment popup,"Verify the popup shows the correct nickname, account, item, price, fee, discount, and total.",Account and email are filled. A denomination is selected and the payment popup is open.,1. Review the summary inside the payment popup before confirming.,,All details in the popup match the input. Total = price + fee - discount.,,,,,,,,,,,,,,,,,,
+Order Product - Payment,OP-018,Positive,Successful payment,Verify order status updates after payment.,"Order created, pending payment.",1. Complete payment using the chosen method.,Exact total amount,"Payment status becomes ""Paid/Success""; success page and notification are shown.",,,,,,,,,,,,,,,,,,
+Order Product - Order Fulfillment,OP-019,Positive,Diamonds delivered to the correct account,Verify credit arrives after successful payment.,Payment successful.,"1. Log into the game account.
+2. Check diamond balance and purchase history.",Test account,"Diamonds (including bonus) are credited to the exact User ID and Zone ID within the SLA; order status becomes ""Completed"".",,,,,,,,,,,,,,,,,,
+Order Product - Order Fulfillment,OP-020,Positive,Invoice and notification after order,Verify the invoice and the email notification show the correct order details.,Order completed.,"1. Open the email notification. 
+2. Open the invoice.",,"Notification received with correct order number, ID, Zone, item, total, payment method, and status.",,,,,,,,,,,,,,,,,,
+Order Product - Login State,OP-021,Positive,Order as logged-in user,Verify order is saved in the account history. Assumption: login is optional.,User logged in.,"1. Place an order through the payment popup. 
+2. Open order history in the profile.",,The order appears in history with the correct status. The email may already be filled from the account.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-022,Negative,Both fields empty on order,Verify mandatory validation.,The product page is open. No denomination is selected.,"1. Leave User ID and Zone ID empty. 
+2. Fill email and select a denomination.",Empty; Empty,Inline errors are shown on both account fields. The payment popup does not open and no order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-023,Negative,"User ID filled, Zone ID empty",Verify Zone ID is mandatory.,The product page is open. No denomination is selected.,"1. Enter User ID. 
+2. Leave Zone ID empty. 
+3. Fill email and select a denomination.",User ID: 123456789; Zone ID: empty,An error is shown on Zone ID. The payment popup does not open and no order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-024,Negative,"Zone ID filled, User ID empty",Verify User ID is mandatory.,The product page is open. No denomination is selected.,"1. Leave User ID empty. 
+2. Enter Zone ID. 
+3. Fill email and select a denomination.",User ID: empty; Zone ID: 1234,An error is shown on User ID. The payment popup does not open and no order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-025,Negative,User ID contains letters,Verify User ID accepts numbers only.,Page loaded.,"1. Type letters into User ID.
+2. Observe field.",abcdefgh,Letters are blocked from entry or a validation error is displayed; order cannot proceed.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-026,Negative,User ID with special characters and spaces,Verify sanitization.,Page loaded.,"1. Enter special characters.
+2. Enter spaces in the middle of the ID.",123@#456; 123 456 789,"Special characters are blocked or error is displayed; spaces are rejected or trimmed per rule, with consistent behavior.",,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-027,Negative,Zone ID contains letters or symbols,Verify Zone ID accepts numbers only.,Page loaded.,1. Type letters and symbols into Zone ID.,ab12; 12-4; 12.4,Invalid characters are blocked or error is shown.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-028,Negative,"Non-existent account (valid format, unregistered)",Verify account existence check.,Denomination selected.,"1. Enter a valid-format but unregistered User ID and Zone ID. 
+2. Stop before email and denomination.",User ID: 999999999; Zone ID: 9999,Account not found is shown before email and denomination. The payment popup does not open and no order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-029,Negative,Injection payload in account fields,Verify XSS and SQL injection safety.,Page loaded.,"1. Enter payloads into User ID and Zone ID. 
+2. Stop before email and denomination.",`<script>alert(1)</script>`; `' OR '1'='1`,Input is rejected or sanitized; no script executes; no SQL or server error shown.,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-030,Negative,Payment popup does not open without a denomination,Verify a denomination is required before the payment popup opens.,Account and email are filled. No denomination is selected.,"1. Fill User ID, Zone ID, and email. 
+2. Do not select a denomination. 
+3. Confirm the payment popup stays closed.",,The payment popup does not open. A message asks the user to select a denomination. No order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Contact Info,OP-031,Negative,Email is empty,Verify email is required before the payment popup opens.,Account is filled. Email is empty.,"1. Fill User ID and Zone ID. 
+2. Leave email empty. 
+3. Select a denomination.",Empty,An error is shown on the email field. The payment popup does not open and no order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Contact Info,OP-032,Negative,Invalid email format,Verify an invalid email blocks the payment popup.,Page loaded.,"1. Fill account. 
+2. Enter an invalid email. 
+3. Select a denomination.",budi@; budi.example.com; @example.com; budi@@example.com,A format error is shown. The payment popup does not open and no order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Contact Info,OP-033,Negative,Phone number entered in the email field,Verify the email field does not accept a phone number instead of an email.,Page loaded.,"1. Fill account. 
+2. Enter a phone number in the email field. 
+3. Select a denomination.",0812; abc12345; 081234567890123456; +++,A validation error asks for a valid email. The payment popup does not open.,,,,,,,,,,,,,,,,,,
+Order Product - Contact Info,OP-034,Negative,Injection payload in the email field,Verify sanitization.,Page loaded.,"1. Fill account. 
+2. Enter payloads into the email field. 
+3. Select a denomination.",`<img src=x onerror=alert(1)>`; `'; DROP TABLE users;--`,The payload is rejected or escaped. The payment popup does not open. No script runs and no order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Payment Method,OP-035,Negative,Confirm inside the popup without a payment method,Verify a payment method inside the popup is required before the order is confirmed.,Account and email are filled. A denomination is selected and the payment popup is open.,"1. Fill account and email. 
+2. Select a denomination so the payment popup opens. 
+3. Confirm without choosing a payment method.",,The popup asks the user to select a payment method. No order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Place Order,OP-036,Negative,Network lost during order submit,Verify no ghost or duplicate order.,All inputs valid.,"1. Confirm the order in the payment popup. 
+2. Disconnect the network immediately. 
+3. Reconnect and check order history and email.",,Connection error shown; at most one order exists; retry works without duplicates.,,,,,,,,,,,,,,,,,,
+Order Product - Payment,OP-037,Negative,Payment failed or declined,Verify failure handling.,Payment gateway returns failure.,"1. Place order.
+2. Simulate failed payment.",Insufficient balance or declined,"Failure message shown; status is not ""Success""; no diamonds delivered; user can retry or choose another method.",,,,,,,,,,,,,,,,,,
+Order Product - Payment,OP-038,Negative,Payment expires,Verify auto-expiry. Assumption: payment time limit e.g. 24 hours (or shorter for QRIS).,Order pending payment.,"1. Do not pay until the time limit passes.
+2. Check order status.",,"Status changes to ""Expired/Cancelled""; payment code or QR is no longer valid; no diamonds delivered.",,,,,,,,,,,,,,,,,,
+Order Product - Payment,OP-039,Negative,Pay an already expired code or QR,Verify late payment is rejected or refunded.,Order expired.,1. Attempt to pay using the expired code or QR.,,"Payment is rejected or auto-refunded; order stays ""Expired"".",,,,,,,,,,,,,,,,,,
+Order Product - Order Fulfillment,OP-040,Negative,Delivery failure after successful payment,Verify handling when the provider fails.,Payment success; provider API returns failure.,"1. Complete payment with provider simulated to fail.
+2. Check order status.",,"Order shows ""Failed/Pending"" with a clear message; automatic retry or refund is triggered per policy; the user is notified.",,,,,,,,,,,,,,,,,,
+Order Product - Security,OP-041,Negative,Price manipulation via request tampering,Verify the server recalculates the price.,Request can be intercepted.,"1. Intercept the order request.
+2. Modify price, total, or fee values.
+3. Send.",price = 1; total = 0; fee = -5000,"Server ignores client values and recalculates, or rejects the request; the order is never created with the tampered price.",,,,,,,,,,,,,,,,,,
+Order Product - Security,OP-042,Negative,Access another user's invoice (IDOR),Verify invoice authorization.,Two orders from different users.,"1. Open invoice URL of order A.
+2. Change the order ID to order B's.",Order ID of another user,Access is denied or data is masked; no personal data of other users is exposed.,,,,,,,,,,,,,,,,,,
+Order Product - Security,OP-043,Negative,Product ID tampering,Verify the server validates the denomination ID against the game.,Request can be intercepted.,"1. Intercept the order request.
+2. Replace product ID with one from another game or a disabled product.",Invalid or other-game product ID,Request is rejected with an error; no order is created.,,,,,,,,,,,,,,,,,,
+Order Product - Security,OP-044,Negative,Rate limiting or brute-force on account check,Verify protection against mass ID enumeration.,Page loaded.,1. Submit many different User ID and Zone ID combinations rapidly.,50+ combinations in 1 minute,Requests are throttled or CAPTCHA is shown; no unlimited nickname enumeration.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-045,Negative,User ID minimum and maximum length,Verify length boundary. Assumption: User ID is 6-10 digits.,Page loaded.,"1. Enter a 5-digit User ID. 
+2. Enter a 6-digit User ID. 
+3. Enter a 10-digit User ID. 
+4. Enter an 11-digit User ID. 
+5. For each value, try to continue to email and a denomination.",12345; 123456; 1234567890; 12345678901,5 and 11 digits are rejected with error; 6 and 10 digits pass format validation (still subject to account check).,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-046,Negative,Zone ID length boundary,Verify Zone ID length. Assumption: Zone ID is 3-5 digits.,Page loaded.,"1. Enter 2-digit Zone ID.
+2. Enter 3-digit Zone ID.
+3. Enter 5-digit Zone ID.
+4. Enter 6-digit Zone ID.",12; 123; 12345; 123456,2 and 6 digits are rejected; 3 and 5 digits pass format validation.,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-047,Positive,Smallest denomination (5 Diamonds),Verify the lowest-priced item works end-to-end.,Page loaded.,"1. Select the 5 Diamonds card.
+2. Fill the form and proceed to payment.",5 Diamonds,Order proceeds to payment with the correct low price; no minimum-amount error unless the payment method has a minimum (then a clear message is shown).,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-048,Positive,Largest denomination,Verify the highest-priced item works end-to-end.,Page loaded.,"1. Select the largest diamond card.
+ 2. Fill the form and proceed to payment.",Largest Diamond package,Order proceeds with the correct high price; payment methods with limits below this amount are disabled or show a clear limit message.,,,,,,,,,,,,,,,,,,
+Order Product - Contact Info,OP-049,Negative,Very long email value,Verify max length handling.,Page loaded.,1. Paste 255+ character email.,300-character string,Input is rejected or truncated with a message; no server error.,,,,,,,,,,,,,,,,,,
+Order Product - Page Display,OP-050,Positive,Price stays the same from the card to the payment popup,"Verify the same denomination shows the same price on the card, in the payment popup, and on the invoice.",Page loaded.,"1. Note the price on the denomination card. 2. Fill account and email, then select that denomination. 3. Compare the price in the payment popup and on the invoice.",,"The price is the same on the card, in the payment popup, and on the invoice.",,,,,,,,,,,,,,,,,,
+Order Product - Page Display,OP-051,Positive,Responsive layout on different screen sizes,"Verify layout on desktop, tablet, and mobile viewport.",Page loaded.,"1. Open the page at 1920px, 768px, and 375px widths.
+ 2. Check card grid and form fields.",1920px; 768px; 375px,"Card grid adapts (columns reduce), no horizontal scroll, no cut-off text, and form fields remain usable.",,,,,,,,,,,,,,,,,,
+Order Product - Page Display,OP-052,Positive,Language and currency switch,Verify the page content changes when language is switched. Assumption: a language selector is available in the header.,Page loaded.,"1. Open the language selector.
+ 2. Switch to another language.
+ 3. Check labels, validation messages, and prices.",,Labels are translated; prices and order logic remain unchanged; selected diamonds and input values are not lost.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-053,Negative,Paste User ID with leading and trailing spaces,Verify trimming.,Page loaded.,"1. Paste "" 123456789 "" into User ID.
+ 2. Continue the order.",""" 123456789 """,Spaces are trimmed or rejected consistently; the order is not created for the wrong ID.,,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-054,Negative,"Paste combined format ""ID(Zone)"" into User ID",Verify handling of common copy-paste from the game.,Page loaded.,"1. Paste ""123456789(1234)"" into User ID.",123456789(1234),"Either auto-split into User ID and Zone ID, or rejected with clear error; never sent as a corrupted ID.",,,,,,,,,,,,,,,,,,
+Order Product - Input Account,OP-055,Positive,Input values persist after tab switch and page scroll,Verify entered account data is retained while browsing denominations.,Page loaded.,"1. Fill User ID, Zone ID, and email. 
+2. Browse denomination categories without selecting one. 
+3. Check the fields.",User ID: 123456789; Zone ID: 1234,"User ID, Zone ID, and email remain unchanged. The payment popup stays closed until a denomination is selected.",,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-056,Positive,Bonus diamond information accuracy,Verify bonus text matches what is delivered.,Account for testing available.,"1. Select a card with bonus.
+ 2. Complete the order.
+ 3. Check in-game diamond received.",Card with bonus,Total diamonds credited equals base + bonus as displayed on the card.,,,,,,,,,,,,,,,,,,
+Order Product - Denomination Selection,OP-057,Negative,Selected denomination after refresh or back navigation,Verify selection state after refresh.,Denomination selected.,"1. Refresh the page.
+ 2. Check selection and total.",,Page resets to the default state or restores the selection consistently; the displayed total always matches the selected item.,,,,,,,,,,,,,,,,,,
+Order Product - Contact Info,OP-058,Negative,Phone formats are rejected in the email field,"Verify +62, 62, and 08 phone formats are rejected in the email field.",Page loaded.,"1. Fill account. 
+2. Enter each phone format in the email field. 
+3. Select a denomination.",,Each phone format is rejected as an invalid email. The payment popup does not open.,,,,,,,,,,,,,,,,,,
+Order Product - Contact Info,OP-059,Positive,Email with uppercase letters and trailing spaces,Verify email normalization.,Page loaded.,"1. Enter "" Budi@Example.COM "".
+2. Complete the order.",""" Budi@Example.COM """,Email is trimmed and accepted; invoice is sent to the correct address.,,,,,,,,,,,,,,,,,,
+Order Product - Place Order,OP-060,Positive,Change the denomination after the payment popup opens,Verify stale data is not used.,Account and email are filled. The payment popup is open for denomination A.,"1. Close the payment popup. 
+2. Select a different denomination. 
+3. Confirm the new popup.",,New order reflects the updated denomination and price; old order data is not reused.,,,,,,,,,,,,,,,,,,
+Order Product - Payment,OP-061,Negative,Close page or back out during payment,Verify the order stays consistent if the user leaves while the payment popup is open.,The payment popup is open. The order is not confirmed yet.,"1. Close the tab or press back while the payment popup is open. 
+2. Open the invoice link or check email.",,"Order remains ""Waiting for Payment"" and can be resumed; no duplicate order.",,,,,,,,,,,,,,,,,,
+Order Product - Payment,OP-062,Positive,Payment success callback delayed,Verify status sync when gateway callback arrives late.,Payment done; callback delayed.,"1. Pay the order.
+ 2. Observe status page for a few minutes.",,"Status shows ""Processing"" then updates to success automatically (or via refresh); no false failure.",,,,,,,,,,,,,,,,,,
+Order Product - Order Fulfillment,OP-063,Positive,Order tracking by order number,Verify the user can check order status without login. Assumption: a transaction lookup feature exists.,Order exists.,1. Open the order tracking page. 2. Enter the order number and email.,Valid order number; wrong order number,"Valid data shows the correct status; invalid data shows ""Order not found""; no data of other users is exposed.",,,,,,,,,,,,,,,,,,
+Order Product - Order Fulfillment,OP-064,Positive,Order number uniqueness,Verify each order has a unique number.,Several orders placed.,"1. Place multiple orders consecutively.
+ 2. Compare order numbers.",,All order numbers are unique and non-repeating.,,,,,,,,,,,,,,,,,,
+Order Product - Login State,OP-065,Negative,Session expires during checkout,Verify confirming the order after the session expires is handled safely.,Logged in; session about to expire.,"1. Fill account and email, select a denomination, and open the payment popup. 
+2. Wait until the session expires. 
+3. Confirm the order.",,User is prompted to re-login or order proceeds safely; inputs are not lost; no order is created without authorization.,,,,,,,,,,,,,,,,,,
+Order Product - Concurrency,OP-066,Positive,Same account ordering from two tabs simultaneously,Verify consistency with parallel orders.,Two browser tabs open.,"1. Submit order in tab A and tab B at the same time.
+ 2. Check orders.",Same User ID and Zone ID,"Each submit creates an independent valid order, or duplicates are prevented per business rule; amounts and statuses stay correct.",,,,,,,,,,,,,,,,,,
+Order - Voucher,,,,,,,,,,,,,,,,,,,,,,,,,,
+Order Voucher - Apply,OV-001,Positive,Apply a valid voucher code,Verify Apply adds the discount on Detail Pesanan.,The payment screen is open. A payment method is selected. A valid voucher exists.,"1. Type the code into Input Voucher Code. 
+2. Click Apply.",Valid voucher code,"The discount is applied. Nominal stays the item price. Total = Nominal + payment fee - discount. Email, Nickname, ID Pemain, the item name, and Sistem Pembayaran stay the same.",,,,,,,,,,,,,,,,,,
+Order Voucher - Validation,OV-002,Negative,"Invalid, expired, or already-used voucher",Verify each rejected code shows its own error.,The payment screen is open. A payment method is selected.,"1. Type an invalid code and click Apply. 
+2. Type an expired code and click Apply. 
+3. Type an already-used code and click Apply.",XXXX9999; EXPIRED01; USED01,A specific error is shown for each code. Nominal and Total stay unchanged. No order is created.,,,,,,,,,,,,,,,,,,
+Order Voucher - Restriction,OV-003,Negative,Voucher not valid for the selected product or payment method,"Verify a restricted voucher is rejected for the item or the selected method (QRIS, Virtual Account, E-Wallet, or Convenience Store).",The payment screen is open. The voucher is limited to certain items or payment methods.,"1. Select an ineligible item or payment method. 
+2. Type the code into Input Voucher Code. 
+3. Click Apply.",Restricted voucher,The voucher is rejected with an explanation. Nominal and Total stay unchanged.,,,,,,,,,,,,,,,,,,
+Order Voucher - Apply,OV-004,Positive,Buy without applying a voucher,Verify the voucher is optional and Buy still creates the order.,The payment screen is open. A payment method is selected. Input Voucher Code is empty.,"1. Leave Input Voucher Code empty. 
+2. Click Buy.",No voucher code,The order is created with no discount. Total = Nominal + payment fee.,,,,,,,,,,,,,,,,,,
+Order Voucher - Validation,OV-005,Positive,Voucher code with extra spaces,Verify Input Voucher Code trims spaces before Apply.,The payment screen is open. A valid voucher exists.,"1. Type the code with leading and trailing spaces into Input Voucher Code. 
+2. Click Apply.",SAVE10 with leading and trailing spaces,The voucher is accepted and the discount is applied. The extra spaces are not kept.,,,,,,,,,,,,,,,,,,
+Order Voucher - Validation,OV-006,Negative,Click Apply with an empty voucher code,Verify Apply does nothing harmful when Input Voucher Code is empty.,The payment screen is open.,"1. Leave Input Voucher Code empty. 
+2. Click Apply.",(empty),A validation message is shown. Nominal and Total do not change. Buy is not submitted.,,,,,,,,,,,,,,,,,,
+Order Voucher - Restriction,OV-007,Negative,Voucher minimum amount is not met,Verify a minimum-spend voucher is rejected when Nominal is below that amount. Assumption: some vouchers require a minimum price.,The payment screen is open for an item below the voucher minimum.,"1. Type the minimum-spend code into Input Voucher Code. 
+2. Click Apply.",Voucher with a minimum amount above Nominal,The voucher is rejected with an explanation. No discount is applied.,,,,,,,,,,,,,,,,,,
+Order Voucher - Apply,OV-008,Positive,Change the denomination after a voucher is applied,Verify the next payment screen does not keep the previous voucher or price.,Account and email are filled. A voucher is applied for denomination A.,"1. Leave the payment screen. 
+2. Select denomination B. 
+3. Check Input Voucher Code, Nominal, and Total.",Denomination A and B; valid voucher,The new screen shows denomination B. Input Voucher Code is empty. Nominal and Total match B. The previous discount is not reused.,,,,,,,,,,,,,,,,,,
+Order Voucher - Restriction,OV-009,Negative,Apply a second voucher code,Verify only one voucher discount is active. Assumption: vouchers are not stacked.,A voucher is already applied on Detail Pesanan.,"1. Type a second code into Input Voucher Code. 
+2. Click Apply.",Two valid voucher codes,Only one discount remains. The second code replaces the first or is rejected with a message. Total is not reduced twice.,,,,,,,,,,,,,,,,,,
+Order Voucher - Validation,OV-010,Negative,Injection payload in Input Voucher Code,Verify a script payload is rejected or escaped when Apply is clicked.,The payment screen is open.,"1. Type a payload into Input Voucher Code. 
+2. Click Apply.",<script>alert(1)</script>,"The payload is rejected or escaped. No script runs, no discount is applied, and no order is created.",,,,,,,,,,,,,,,,,,
+Order Voucher - Apply,OV-011,Positive,Invoice and email match Detail Pesanan,Verify the voucher discount survives Buy onto the invoice and the email.,A valid voucher is applied and the payment method is selected.,"1. Note Nominal, the discount, and Total. 
+2. Click Buy. 
+3. Open the invoice and the email.",Valid voucher code,"Item name, Nominal, voucher discount, fee, and Total match Detail Pesanan.",,,,,,,,,,,,,,,,,,
+Order Voucher - Display,OV-012,Positive,Voucher field and order detail are shown,Verify the payment screen shows the voucher entry and Detail Pesanan before a code is applied.,Account and email are filled.,1. Select a denomination so the payment screen opens.,Super Value Pass; valid account and email,"The screen shows the voucher prompt, Input Voucher Code, and Apply. Detail Pesanan shows the item, Email, Nickname, ID Pemain as User ID (Zone ID), Sistem Pembayaran, Nominal, and Total. The Buy button is shown.",,,,,,,,,,,,,,,,,,
+Order Voucher - Apply,OV-013,Positive,Account details stay the same after Apply,Verify Apply changes only the discount and Total.,The payment screen is open. A valid voucher exists.,"1. Note Email, Nickname, ID Pemain, and the item name. 
+2. Type the code into Input Voucher Code. 
+3. Click Apply.",Valid voucher code,"Email, Nickname, ID Pemain, and the item name stay the same. Total updates to Nominal + payment fee - discount.",,,,,,,,,,,,,,,,,,
+Order Voucher - Apply,OV-014,Positive,Change payment method after Apply,Verify Sistem Pembayaran and Total update when another method is selected.,A valid voucher is applied while QRIS is selected.,"1. Note Total. 
+2. Select another method, such as Virtual Account, E-Wallet, or Convenience Store.",Valid voucher; QRIS then another method,"Sistem Pembayaran shows the new method. Nominal stays the item price. Total recalculates with the new fee and the discount if the voucher still applies. If the voucher is not valid for the new method, the discount is removed and an explanation is shown.",,,,,,,,,,,,,,,,,,
+Order Voucher - Apply,OV-015,Positive,Buy uses the Total shown after Apply,Verify Buy charges the Total on Detail Pesanan.,A payment method is selected and a valid voucher is applied.,"1. Note the Total. 
+2. Click Buy.",Valid voucher code,One order is created. The charged amount equals the Total on Detail Pesanan. No second discount is applied at Buy.,,,,,,,,,,,,,,,,,,
